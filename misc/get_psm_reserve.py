@@ -7,7 +7,7 @@ class PegStabilityModule:
     def __init__(self, reserve, totalSupply):
         self.reserve = reserve  # USDC in the Peg Stability Module
         self.totalSupply = totalSupply  # GM in circulation
-        self.baseFeeRate = 50  # in bps
+        self.baseFeeRate = 25  # in bps
 
     def redeem(self, amount):
         fee = amount * self.baseFeeRate / 10000 + amount**2 / (
@@ -53,7 +53,7 @@ def get_optimal_redeem_amount(PSM, price):
     return (left + right) / 2
 
 
-PSM = PegStabilityModule(250_000, 500_000)
+PSM = PegStabilityModule(200_000, 500_000)
 redemption_records = [
     [
         "Iteration",
@@ -68,9 +68,9 @@ redemption_records = [
 ]
 
 i = 1
-while PSM.reserve > 0 and i < 100:
+while PSM.reserve > 0 and i < 50:
     prev_supply = PSM.totalSupply
-    price = (10000 - random.randint(0, 200)) / 10000
+    price = (10000 - random.randint(50, 100)) / 10000
     amount = get_optimal_redeem_amount(PSM, price)
     # print(f"{i}-th quote: {price}, redeem amount: {amount}")
     profit = PSM.redeem(amount) - amount * price

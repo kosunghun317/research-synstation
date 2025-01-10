@@ -691,6 +691,20 @@ files = [
 ]
 
 [[package]]
+name = "click"
+version = "8.1.8"
+description = "Composable command line interface toolkit"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "click-8.1.8-py3-none-any.whl", hash = "sha256:63c132bbbed01578a06712a2d1f497bb62d9c1c0d329b7903a866228027263b2"},
+    {file = "click-8.1.8.tar.gz", hash = "sha256:ed53c9d8990d83c2a27deae68e4ee337473f6330c040a31d4225c9574d16096a"},
+]
+
+[package.dependencies]
+colorama = {version = "*", markers = "platform_system == \"Windows\""}
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 description = "Cross-platform colored terminal text."
@@ -1770,6 +1784,23 @@ files = [
 ]
 
 [[package]]
+name = "lark"
+version = "1.2.2"
+description = "a modern parsing library"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "lark-1.2.2-py3-none-any.whl", hash = "sha256:c2276486b02f0f1b90be155f2c8ba4a8e194d42775786db622faccd652d8e80c"},
+    {file = "lark-1.2.2.tar.gz", hash = "sha256:ca807d0162cd16cef15a8feecb862d7319e7a09bdb13aef927968e45040fed80"},
+]
+
+[package.extras]
+atomic-cache = ["atomicwrites"]
+interegular = ["interegular (>=0.3.1,<0.4.0)"]
+nearley = ["js2py"]
+regex = ["regex"]
+
+[[package]]
 name = "lru-dict"
 version = "1.3.0"
 description = "An Dict like LRU container."
@@ -1861,6 +1892,26 @@ files = [
 
 [package.extras]
 test = ["pytest"]
+
+[[package]]
+name = "mamushi"
+version = "0.0.4"
+description = "Vyper formatter"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "mamushi-0.0.4-py3-none-any.whl", hash = "sha256:fa4e0160cb6323f7c4336ec8ec057ab0dbe5fd22866217c7cf9093add935d178"},
+    {file = "mamushi-0.0.4.tar.gz", hash = "sha256:b1889ed3acf8d58c4a348237f47f79f5447e4f1fa1fe8435f4613095dc6381ad"},
+]
+
+[package.dependencies]
+click = ">=8.0.0"
+lark = ">=1.0.0"
+mypy-extensions = "0.4.3"
+pathspec = ">=0.9.0"
+
+[package.extras]
+dev = ["black (==23.1.0)", "bump2version (>=1.0.0)", "coverage (>=6.0.0)", "flake8 (==5.0.4)", "mypy (>=0.900)", "mypy_extensions (==0.4.3)", "pre-commit (==2.20.0)", "pylint (==2.14.5)", "pytest (>=6.0.0)", "pytest-cov (>=3.0.0)"]
 
 [[package]]
 name = "markdown-it-py"
@@ -1967,6 +2018,31 @@ files = [
     {file = "mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"},
     {file = "mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"},
 ]
+
+[[package]]
+name = "mesa"
+version = "3.1.2"
+description = "Agent-based modeling (ABM) in Python"
+optional = false
+python-versions = ">=3.11"
+files = [
+    {file = "mesa-3.1.2-py3-none-any.whl", hash = "sha256:20b3ccdfbcdcbfd8d550fa1b35172e550f85da87fd7e6bf6e55716b12ea8868c"},
+    {file = "mesa-3.1.2.tar.gz", hash = "sha256:bc2903334756857ada7566864d3495494baedf703392803ae6406d873eb86202"},
+]
+
+[package.dependencies]
+numpy = "*"
+pandas = "*"
+tqdm = "*"
+
+[package.extras]
+all = ["ipython", "matplotlib", "myst-nb", "myst-parser", "networkx", "pydata-sphinx-theme", "pytest", "pytest-cov", "pytest-mock", "ruff", "scipy", "seaborn", "solara", "sphinx"]
+dev = ["matplotlib", "networkx", "pytest", "pytest-cov", "pytest-mock", "ruff", "solara", "sphinx"]
+docs = ["ipython", "matplotlib", "myst-nb", "myst-parser", "networkx", "pydata-sphinx-theme", "seaborn", "solara", "sphinx"]
+examples = ["matplotlib", "networkx", "pytest", "scipy", "solara"]
+network = ["networkx"]
+rec = ["matplotlib", "networkx", "solara"]
+viz = ["matplotlib", "solara"]
 
 [[package]]
 name = "moccasin"
@@ -2094,6 +2170,17 @@ files = [
     {file = "multidict-6.1.0-cp39-cp39-win_amd64.whl", hash = "sha256:aa466da5b15ccea564bdab9c89175c762bc12825f4659c11227f515cee76fa4a"},
     {file = "multidict-6.1.0-py3-none-any.whl", hash = "sha256:48e171e52d1c4d33888e529b999e5900356b9ae588c2f09a52dcefb158b27506"},
     {file = "multidict-6.1.0.tar.gz", hash = "sha256:22ae2ebf9b0c69d206c003e2f6a914ea33f0a932d4aa16f236afc049d9958f4a"},
+]
+
+[[package]]
+name = "mypy-extensions"
+version = "0.4.3"
+description = "Experimental type system extensions for programs checked with the mypy typechecker."
+optional = false
+python-versions = "*"
+files = [
+    {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
+    {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
 ]
 
 [[package]]
@@ -2292,6 +2379,17 @@ files = [
 [package.extras]
 qa = ["flake8 (==5.0.4)", "mypy (==0.971)", "types-setuptools (==67.2.0.1)"]
 testing = ["docopt", "pytest"]
+
+[[package]]
+name = "pathspec"
+version = "0.12.1"
+description = "Utility library for gitignore style pattern matching of file paths."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pathspec-0.12.1-py3-none-any.whl", hash = "sha256:a0d503e138a4c123b27490a4f7beda6a01c6f288df0e4a8b79c7eb0dc7b4cc08"},
+    {file = "pathspec-0.12.1.tar.gz", hash = "sha256:a482d51503a1ab33b1c67a6c3813a26953dbdc71c31dacaef9a838c4e29f5712"},
+]
 
 [[package]]
 name = "pexpect"
@@ -3966,4 +4064,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.12,<3.13"
-content-hash = "764320f71498995072cee984c5d27d4c0da3d8ef73418a98aca3da338af3540f"
+content-hash = "3a5d25b05ac941e2cbb13400706a5142baf9b3b197813f57af83b2e60543449e"
