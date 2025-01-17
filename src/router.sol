@@ -136,7 +136,7 @@ contract outcomeBuyRouter {
     }
 
     function _getGoodMoneyRequired(
-        uint marketId,
+        uint,
         uint outcomeIndex,
         uint numberOfOutcomes,
         uint amount,
@@ -317,7 +317,7 @@ contract outcomeSellRouter {
      * @return goodMoneyReceived The amount of GM tokens you end up receiving.
      */
     function _getGoodMoneyReceived(
-        uint marketId,
+        uint,
         uint outcomeIndex,
         uint numberOfOutcomes,
         uint amount,
