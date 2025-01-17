@@ -32,12 +32,16 @@ class PegStabilityModule:
         # update the variable burn fee rate and last redemption timestamp
         self.variableBurnFeeRate = self.variableBurnFeeRate / 2 ** int(
             (_timestamp - self.lastRedemptionTimestamp) / self.burnFeeRateHalfLife
-        ) # decay the variable burn fee rate
-        self.variableBurnFeeRate += _amount / (2 * self.GM.totalSupply) * 10**6 # update the variable burn fee rate (in ppm)
+        )  # decay the variable burn fee rate
+        self.variableBurnFeeRate += (
+            _amount / (2 * self.GM.totalSupply) * 10**6
+        )  # update the variable burn fee rate (in ppm)
         self.lastRedemptionTimestamp = _timestamp
 
         # calculate fee applied
-        feeApplied = _amount * (self.constBurnFeeRate + self.variableBurnFeeRate) / 10**6
+        feeApplied = (
+            _amount * (self.constBurnFeeRate + self.variableBurnFeeRate) / 10**6
+        )
 
         # reserve should be greater than or equal to the amount of USDC to be redeemed
         assert self.reserve >= _amount - feeApplied, "Insufficient reserve"
@@ -98,13 +102,14 @@ class ConcentratedLiquidityMarketMaker:
     P_u = 1
     P_l = 0.98
     """
+
     def __init__(self, _x, _y, P_u, P_l):
         self.x = _x
         self.y = _y
         self.P_u = P_u
         self.P_l = P_l
         self.precision = 1e-9
-    
+
     def _get_L(self):
         """
         get invariant L through Newton's method
@@ -113,15 +118,21 @@ class ConcentratedLiquidityMarketMaker:
         L_new = self.precision
 
         for _ in range(128):
-            f = L_prev**2 - (self.x + L_prev / np.sqrt(self.P_u)) * (self.y + L_prev * np.sqrt(self.P_l))
-            f_prime = 2 * L_prev - (self.x + L_prev / np.sqrt(self.P_u)) * np.sqrt(self.P_l) - (self.y + L_prev * np.sqrt(self.P_l)) / np.sqrt(self.P_u)
+            f = L_prev**2 - (self.x + L_prev / np.sqrt(self.P_u)) * (
+                self.y + L_prev * np.sqrt(self.P_l)
+            )
+            f_prime = (
+                2 * L_prev
+                - (self.x + L_prev / np.sqrt(self.P_u)) * np.sqrt(self.P_l)
+                - (self.y + L_prev * np.sqrt(self.P_l)) / np.sqrt(self.P_u)
+            )
             L_new = L_prev - f / f_prime
 
             if abs(L_new - L_prev) < self.precision:
                 break
-        
+
         return L_new
-    
+
     def swap(self, _amount, _quote_to_base):
         """
         _amount: amount of output asset
@@ -132,7 +143,9 @@ class ConcentratedLiquidityMarketMaker:
         L = self._get_L()
 
         if _quote_to_base:
-            _amount = np.clip(_amount, 0, self.x - self.precision) # u cannot buy more than x
+            _amount = np.clip(
+                _amount, 0, self.x - self.precision
+            )  # u cannot buy more than x
 
             old_x = self.x
             old_y = self.y
@@ -142,9 +155,11 @@ class ConcentratedLiquidityMarketMaker:
             self.x = new_x
             self.y = new_y
 
-            return new_y - old_y # return the amount of quote asset to be paid
+            return new_y - old_y  # return the amount of quote asset to be paid
         else:
-            _amount = np.clip(_amount, 0, self.y - self.precision) # u cannot sell more than y
+            _amount = np.clip(
+                _amount, 0, self.y - self.precision
+            )  # u cannot sell more than y
 
             # return the amount of quote asset the caller receives
             old_x = self.x
@@ -155,8 +170,8 @@ class ConcentratedLiquidityMarketMaker:
             self.x = new_x
             self.y = new_y
 
-            return new_x - old_x # return the amount of base asset to be paid
-    
+            return new_x - old_x  # return the amount of base asset to be paid
+
     def quote(self, _amount, _quote_to_base):
         L = self._get_L()
 
@@ -168,7 +183,7 @@ class ConcentratedLiquidityMarketMaker:
             new_x = old_x - _amount
             new_y = L**2 / (new_x + L / np.sqrt(self.P_u)) - L * np.sqrt(self.P_l)
 
-            return new_y - old_y # return the amount of quote asset to be paid
+            return new_y - old_y  # return the amount of quote asset to be paid
         else:
             _amount = np.clip(_amount, 0, self.y - self.precision)
 
@@ -178,8 +193,6 @@ class ConcentratedLiquidityMarketMaker:
             new_x = L**2 / (new_y + L * np.sqrt(self.P_l)) - L / np.sqrt(self.P_u)
 
             return new_x - old_x
-
-
 
 
 # each block; yield rate of USDC is determined based on CIR (Cox-Ingersoll-Ross) model
@@ -203,12 +216,23 @@ initial_interest_rate = 0.05
 mint_fee_rate = 0.01  # 1%
 const_burn_fee_rate = 0.005  # 0.5%
 variable_burn_fee_rate = 0.005  # 0.5%
-burn_fee_rate_half_life = 60 * 60 * 12 # 12 hours
+burn_fee_rate_half_life = 60 * 60 * 12  # 12 hours
 # USDC
 usdc_yield_rate = 0.05  # 5% TODO: ranomize this value
 
 # initialize GM and PSM
-GM = GoodMoney(initial_supply * (1 - target_debt_fraction), initial_interest_rate, target_debt_fraction, kappa)
-PSM = PegStabilityModule(GM, mint_fee_rate, const_burn_fee_rate, variable_burn_fee_rate, burn_fee_rate_half_life)
+GM = GoodMoney(
+    initial_supply * (1 - target_debt_fraction),
+    initial_interest_rate,
+    target_debt_fraction,
+    kappa,
+)
+PSM = PegStabilityModule(
+    GM,
+    mint_fee_rate,
+    const_burn_fee_rate,
+    variable_burn_fee_rate,
+    burn_fee_rate_half_life,
+)
 GM.setPSM(PSM)
 PSM.deposit(initial_supply * target_debt_fraction)
