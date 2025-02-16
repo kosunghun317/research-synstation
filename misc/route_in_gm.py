@@ -116,7 +116,9 @@ def find_flashloan_limit(amms, i, cash):
         [amms[j].y for j in range(len(amms)) if j != i]
     )  # trivial upper bound
 
+    count = 0
     while left + 1 < right:
+        count += 1
         mid = (left + right) // 2
 
         lhs = cash + sum(
@@ -133,6 +135,7 @@ def find_flashloan_limit(amms, i, cash):
         else:
             right = mid
 
+    print(f"\nflashloan limit count: {count}")
     return left
 
 
@@ -161,7 +164,9 @@ def find_optimal_flashloan(amms, i, amount_in):
     left = 0
     right = find_flashloan_limit(amms, i, amount_in)
 
+    count = 0
     while left + 3 <= right:
+        count += 1
         mid1 = left + (right - left) // 3
         mid2 = right - (right - left) // 3
 
@@ -175,6 +180,7 @@ def find_optimal_flashloan(amms, i, amount_in):
 
     mid = (left + right) // 2
     output = quote_buy_exact_input_multiple(amms, i, amount_in, mid)
+    print(f"optimal flashloan count: {count}")
 
     return mid, output
 
