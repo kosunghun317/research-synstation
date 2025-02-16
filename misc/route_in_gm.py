@@ -240,7 +240,7 @@ def test_quote_exact_input_buy_multiple():
     print(tabulate(table_data, headers=headers, tablefmt="pretty"))
 
 
-def print_amms(amms):
+def print_amms(amms, before_swap=True):
     # Prepare headers and collect results for each pool
     headers = [
         "Pool",
@@ -278,17 +278,18 @@ def print_amms(amms):
             ),
         ]
     )
-    print("\n Pool Status:")
+    before_or_after = "Before" if before_swap else "After"
+    print(f"\n Pool Status {before_or_after} Swap:")
     print(tabulate(table_data, headers=headers, tablefmt="pretty"))
 
 
 def test_swap_exact_input_buy_multiple():
     n = random.randint(2, 16)
-    idx = random.randint(0, n - 1)
+    idx = 0  # random.randint(0, n - 1)
     amms = generate_amms(n)
     # cash is in "GM" units scaled by 10**6 (as per original code)
     cash = 10**6 * random.randint(10**3, 10**6)
-    print(f"cash: {cash/10**6}")
+    cash_before_flashloan_and_sell = cash
 
     # Print the status before the trade
     print_amms(amms)
@@ -308,7 +309,6 @@ def test_swap_exact_input_buy_multiple():
 
     # Swap GM into O_i
     cash -= optimal_flashloan_amount
-    print(f"cash after flashloan: {cash/10**6}")
     O_idx_received = quote_exact_input_single(amms[idx], cash, True)
     amms[idx].swap(-O_idx_received, cash)
     bought += (
@@ -316,7 +316,9 @@ def test_swap_exact_input_buy_multiple():
     )
 
     # Print the status after the trade
-    print_amms(amms)
+    print_amms(amms, False)
+    print(f"\ncash before flashloan: {cash_before_flashloan_and_sell/10**6}")
+    print(f"cash after flashloan: {cash/10**6}")
     print(f"quote: {quote/10**6}")
     print(f"bought: {bought/10**6}")
 
