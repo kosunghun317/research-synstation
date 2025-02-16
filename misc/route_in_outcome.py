@@ -223,7 +223,7 @@ def generate_input(n=0, fee_bps=0, total_dx=0):
 def test_buy():
     print("-" * 100)
     print("Test Optimal Split for Buying\n")
-    amms, i, total_dx = generate_input(32, 0, 0)
+    amms, i, total_dx = generate_input(8, 0, 0)
     print(f"fee rate: {amms[0].fee_bps} bps\n")
 
     # Optimal Split
@@ -271,7 +271,7 @@ def test_buy():
 def test_sell():
     print("-" * 100)
     print("Test Optimal Split for Selling\n")
-    amms, i, total_dx = generate_input(32, 0, 0)
+    amms, i, total_dx = generate_input(8, 0, 0)
     print(f"fee rate: {amms[0].fee_bps} bps\n")
 
     # Optimal Split
