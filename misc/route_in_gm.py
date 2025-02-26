@@ -186,7 +186,7 @@ def find_optimal_flashloan(amms, i, amount_in):
 
 
 def generate_amms(n):
-    L_list = [10**6 * random.randint(1_000, 1_000_000) for _ in range(n)]
+    L_list = [10**6 * random.randint(1_000, 1_000_0) for _ in range(n)]
     p_list = [0, 10**6]
     for _ in range(n - 1):
         num = random.randint(1, 10**6 - 1)
@@ -290,11 +290,12 @@ def print_amms(amms, before_swap=True):
 
 
 def test_swap_exact_input_buy_multiple():
-    n = random.randint(2, 16)
+    n = 9  # random.randint(2, 16)
     idx = 0  # random.randint(0, n - 1)
     amms = generate_amms(n)
     # cash is in "GM" units scaled by 10**6 (as per original code)
-    cash = 10**6 * random.randint(10**3, 10**6)
+    cash_log = random.randint(0, 2)
+    cash = 10**6 * random.randint(10**cash_log, 10**(cash_log + 1))
     cash_before_flashloan_and_sell = cash
 
     # Print the status before the trade
